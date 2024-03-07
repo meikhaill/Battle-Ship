@@ -8,6 +8,18 @@ RSpec.describe Cell do
     end
  end
 
+  describe '#initialize' do
+    it 'can initialize' do
+      ship = Ship.new("cruiser", 3)
+      cell = Cell.new("A4")
+      expect(cell.coordinate).to eq("A4")
+      expect(cell.empty?).to eq(true)
+      expect(cell.fired).to eq(false)
+    end
+  end
+
+      
+
   describe '#place_ship' do
     it 'returns the ship' do
       ship = Ship.new("cruiser", 3)

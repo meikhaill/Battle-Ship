@@ -1,5 +1,5 @@
 class Cell
-  attr_accessor :coordinate, :empty
+  attr_accessor :coordinate, :empty, :fired
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = nil
