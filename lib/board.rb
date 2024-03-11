@@ -9,7 +9,7 @@ class Board
     ('A'..'D').each do |row|
       (1..4).each do |col|
         coordinate = "#{row}#{col}"
-        @cellsbo[coordinate] = Cell.new(coordinate)
+        @cells[coordinate] = Cell.new(coordinate)
       end
     end
   end
@@ -62,36 +62,27 @@ class Board
   end
 
    def render(show_ships = false)
-    board_header = "  1 2 3 4 \n"
+       board_header = "  1 2 3 4 \n"
     board_rows = ['A', 'B', 'C', 'D'].map do |row|
-      row_content = (1..4).map do |col|
-        @cells["#{row}#{col}"].render(show_ships)
-      end.join(' ')
-      "#{row} #{row_content} \n"
-    end.join('')
-    board_header + board_rows
+      "#{row} " + (1..4).map { |col| @cells["#{row}#{col}"].render(show_ships) }.join(' ')
+    end.join("\n")
+
+    print board_header + board_rows + "\n"
   end
 #everything above this is all fine and dandy, same with the other classes
  
   def valid_placement?(ship, coords)
-     return false unless coords.size == ship.length
-  
-  # Extract rows and columns from coordinates
-  rows = coords.map { |coord| coord[0].ord - 'A'.ord }
-  cols = coords.map { |coord| coord[1..-1].to_i - 1 }
-  
-  # Check for linear and consecutive placement
-  linear_horizontal = rows.uniq.size == 1 && cols.each_cons(2).all? { |a, b| b == a + 1 }
-  linear_vertical = cols.uniq.size == 1 && rows.each_cons(2).all? { |a, b| b == a + 1 }
-  
-  # Ensure placement is either linear or valid reverse, not diagonal
-  valid_placement = linear_horizontal || linear_vertical
-  
-  return false unless valid_placement
-  
-  # Further checks for overlapping or out-of-bounds placement can be added here
-  
-  true
+    return false unless coords.size == ship.length
+    rows = coords.map { |coord| coord[0].ord - 'A'.ord }
+    cols = coords.map { |coord| coord[1..-1].to_i - 1 }
+    
+    linear_horizontal = rows.uniq.size == 1 && cols.each_cons(2).all? { |a, b| b == a + 1 }
+    linear_vertical = cols.uniq.size == 1 && rows.each_cons(2).all? { |a, b| b == a + 1 }
+    
+    valid_placement = linear_horizontal || linear_vertical
+    
+    return false unless valid_placement
+    true
   end
 
 end
